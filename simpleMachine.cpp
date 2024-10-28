@@ -34,6 +34,14 @@ std::string SimpleMachine::GetState()
 	return state;
 }
 
+void SimpleMachine::ExecuteInstruction()
+{
+	int instructionPos = _storage[0];
+	int instructionId = _storage[instructionPos];
+
+	//instructionHandling here
+}
+
 int SimpleMachine::GetLastMemoryposition()
 {
 	for (int i = _storage.size() - 1; i >= 0; i--)
