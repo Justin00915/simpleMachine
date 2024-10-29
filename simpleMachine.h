@@ -9,7 +9,7 @@ class SimpleMachine
 public:
 	SimpleMachine(std::vector<int> storage, std::vector<void (*) (SimpleMachine& machine)> inputInstructions);
 	void ProcessIteration();
-	std::string GetState();
+	std::string GetDisplayState();
 
 	std::vector<int> storage = std::vector<int>(STORAGE_SIZE, 0);
 	bool halting = false;

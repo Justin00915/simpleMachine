@@ -19,7 +19,8 @@ SimpleMachine::SimpleMachine(std::vector<int> inputStorage, std::vector<void (*)
 	_instructions = inputInstructions;
 }
 
-std::string SimpleMachine::GetState()
+//Leaves a trailing zero for user friendlyness. When this trailing zero would be out of bounds, don't add it, instead end on the actual last storage value
+std::string SimpleMachine::GetDisplayState()
 {
 	std::string state;
 

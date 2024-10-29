@@ -24,23 +24,24 @@ void main() {
 
 	SimpleMachine machine(storage, instructions);
 
+	std::cout << "Initial state" << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
+	std::cin.get();
+
 	int i = 0;
-	while(true)
+	while (true)
 	{
 		if (i >= MAX_ITERATIONCOUNT)
 		{
 			std::cout << "Reached max iterations." << std::endl;
 			break;
 		}
-		
+
 		if (machine.halting)
 			break;
 
-		if(i != 0)
-			machine.ProcessIteration();
-		std::cout << std::format("Iteration {}", i + 1) << std::endl << machine.GetState() << "Press enter to continue\n";
+		machine.ProcessIteration();
+		std::cout << std::format("Iteration {}", i + 1) << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
 		std::cin.get();
-		std::cout.flush();
 
 		i++;
 	}
