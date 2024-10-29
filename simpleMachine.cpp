@@ -3,7 +3,7 @@
 #include<string>
 #include<format>
 
-SimpleMachine::SimpleMachine(std::vector<int> inputStorage)
+SimpleMachine::SimpleMachine(std::vector<int> inputStorage, std::vector<void (*) (SimpleMachine& machine)> inputInstructions)
 {
 	if (inputStorage.size() > STORAGE_SIZE)
 	{
@@ -13,40 +13,64 @@ SimpleMachine::SimpleMachine(std::vector<int> inputStorage)
 
 	for (int i = 0; i < inputStorage.size(); i++)
 	{
-		_storage[i] = inputStorage[i];
+		storage[i] = inputStorage[i];
 	}
+
+	_instructions = inputInstructions;
 }
 
 std::string SimpleMachine::GetState()
 {
 	std::string state;
 
-	int lastMemPos = GetLastMemoryposition();
-	if (lastMemPos == -1)
-	{
-		return "0: 0\n";
-	}
+	int lastUsedStorPos = GetLastMemoryposition();
 	
-	for (int i = 0; i <= fminf(lastMemPos + 1, STORAGE_SIZE - 1); i++)
+	if (lastUsedStorPos == -1)
 	{
-		state.append(std::format("{}: {}\n", i, _storage[i]));
+		state.append("0: 0\n");
 	}
+	else
+	{
+		for (int i = 0; i <= fminf(lastUsedStorPos + 1, STORAGE_SIZE - 1); i++)
+		{
+			state.append(std::format("{}: {}\n", i, storage[i]));
+		}
+	}
+
+	if (halting)
+		state.append("halted\n");
 	return state;
+}
+
+void SimpleMachine::ProcessIteration()
+{
+	SetInstruction();
+	ExecuteInstruction();
+}
+
+void SimpleMachine::SetInstruction()
+{
+	int instructionPos = storage[0];
+	int instructionId = storage[instructionPos];
+
+	if (instructionId >= _instructions.size())
+	{
+		_instruction = _instructions[0];
+		return;
+	}
+	_instruction = _instructions[instructionId];
 }
 
 void SimpleMachine::ExecuteInstruction()
 {
-	int instructionPos = _storage[0];
-	int instructionId = _storage[instructionPos];
-
-	//instructionHandling here
+	_instruction(*this);
 }
 
 int SimpleMachine::GetLastMemoryposition()
 {
-	for (int i = _storage.size() - 1; i >= 0; i--)
+	for (int i = storage.size() - 1; i >= 0; i--)
 	{
-		if (_storage[i] != 0)
+		if (storage[i] != 0)
 			return i;
 	}
 	return -1;

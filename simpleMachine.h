@@ -7,13 +7,19 @@ const int STORAGE_SIZE = 1024;
 class SimpleMachine
 {
 public:
-	SimpleMachine(std::vector<int> storage);
-
+	SimpleMachine(std::vector<int> storage, std::vector<void (*) (SimpleMachine& machine)> inputInstructions);
+	void ProcessIteration();
 	std::string GetState();
-	void ExecuteInstruction();
+
+	std::vector<int> storage = std::vector<int>(STORAGE_SIZE, 0);
+	bool halting = false;
 
 private:
+	void SetInstruction();
+	void ExecuteInstruction();
+
 	int GetLastMemoryposition();
 
-	std::vector<int> _storage = std::vector<int>(STORAGE_SIZE, 0);
+	void (*_instruction) (SimpleMachine& machine) = nullptr;
+	std::vector<void (*) (SimpleMachine& machine)> _instructions;
 };
