@@ -5,7 +5,7 @@
 const int MAX_ITERATIONCOUNT = 64;
 
 void main() {
-	std::vector<int> storage{ 1, 1, 1, 0, 0 };
+	std::vector<int> storage{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
 	std::vector<void(*)(SimpleMachine& machine)> instructions
 	{
@@ -19,6 +19,45 @@ void main() {
 		[](SimpleMachine& machine)
 		{
 			machine.storage[0]++;
+		},
+
+		//INC
+		[](SimpleMachine& machine)
+		{
+			int instructionPos = machine.storage[0];
+			int incPos = machine.storage[instructionPos + 1];
+
+			machine.storage[incPos]++;
+
+			machine.storage[0] += 2;
+		},
+
+		//DEC
+		[](SimpleMachine& machine)
+		{
+			int instructionPos = machine.storage[0];
+			int incPos = machine.storage[instructionPos + 1];
+
+			if (machine.storage[incPos] > 0)
+				machine.storage[incPos]--;
+
+			machine.storage[0] += 2;
+		},
+
+		//JNZ
+		[](SimpleMachine& machine)
+		{
+			int instructionPos = machine.storage[0];
+			int decisionVar = machine.storage[instructionPos + 1];
+			int jumpPos = machine.storage[instructionPos + 2];
+
+			if (decisionVar != 0)
+			{
+				machine.storage[0] = jumpPos;
+				return;
+			}
+
+			machine.storage[0] += 3;
 		}
 	};
 
