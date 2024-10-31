@@ -76,3 +76,29 @@ int SimpleMachine::GetLastMemoryposition()
 	}
 	return -1;
 }
+
+#include<iostream>
+void Run(SimpleMachine machine)
+{
+	std::cout << "Initial state" << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
+	std::cin.get();
+
+	int i = 0;
+	while (true)
+	{
+		if (i >= MAX_ITERATIONCOUNT)
+		{
+			std::cout << "Reached max iterations." << std::endl;
+			break;
+		}
+
+		if (machine.halting)
+			break;
+
+		machine.ProcessIteration();
+		std::cout << std::format("Iteration {}", i + 1) << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
+		std::cin.get();
+
+		i++;
+	}
+}

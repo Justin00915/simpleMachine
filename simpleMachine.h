@@ -2,7 +2,11 @@
 #include<string>
 #include<vector>
 
+//Machine storage Size
 const int STORAGE_SIZE = 1024;
+
+//Run iteration Count
+const int MAX_ITERATIONCOUNT = 64;
 
 class SimpleMachine
 {
@@ -23,3 +27,5 @@ private:
 	void (*_instruction) (SimpleMachine& machine) = nullptr;
 	std::vector<void (*) (SimpleMachine& machine)> _instructions;
 };
+
+void Run(SimpleMachine machine);

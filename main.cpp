@@ -2,10 +2,9 @@
 #include<format>
 #include"simpleMachine.h"
 
-const int MAX_ITERATIONCOUNT = 64;
-
-void main() {
-	std::vector<int> storage{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+int main() {
+	std::vector<int> storage
+	{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
 	std::vector<void(*)(SimpleMachine& machine)> instructions
 	{
@@ -62,26 +61,5 @@ void main() {
 	};
 
 	SimpleMachine machine(storage, instructions);
-
-	std::cout << "Initial state" << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
-	std::cin.get();
-
-	int i = 0;
-	while (true)
-	{
-		if (i >= MAX_ITERATIONCOUNT)
-		{
-			std::cout << "Reached max iterations." << std::endl;
-			break;
-		}
-
-		if (machine.halting)
-			break;
-
-		machine.ProcessIteration();
-		std::cout << std::format("Iteration {}", i + 1) << std::endl << machine.GetDisplayState() << "Press enter to continue\n";
-		std::cin.get();
-
-		i++;
-	}
+	Run(machine);
 }
