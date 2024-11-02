@@ -4,7 +4,7 @@
 
 int main() {
 	std::vector<int> storage
-	{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+	{ 2, 7, 3, 1, 4, 1, 2, 0 };
 
 	std::vector<void(*)(SimpleMachine& machine)> instructions
 	{
@@ -47,10 +47,10 @@ int main() {
 		[](SimpleMachine& machine)
 		{
 			int instructionPos = machine.storage[0];
-			int decisionVar = machine.storage[instructionPos + 1];
+			int decisionVarPos = machine.storage[instructionPos + 1];
 			int jumpPos = machine.storage[instructionPos + 2];
 
-			if (decisionVar != 0)
+			if (machine.storage[decisionVarPos] != 0)
 			{
 				machine.storage[0] = jumpPos;
 				return;
